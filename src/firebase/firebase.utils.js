@@ -15,9 +15,6 @@ const config = {
 export const createUserProfileDocument = async (userAuth, additonalData) => {
     if(!userAuth) return;
 
-    console.log('UserAuth ', userAuth);
-    console.log('Additional Data ', additonalData);
-
     // get the document reference
     // using document reference object only we can perform CRUD operations
     const userRef = firestore.doc(`users/${userAuth.uid}`);
