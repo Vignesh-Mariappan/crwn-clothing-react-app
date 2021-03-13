@@ -2,6 +2,10 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import './App.css';
 
+/* The following imports are for redux operations */
+import { connect } from 'react-redux';
+import { setCurrentUser } from './redux/user/user-actions';
+
 import ShopPage from './pages/shop/shop-page.component';
 import HomePage from './pages/homepage/homepage.component';
 import Header from './components/header/header.component';
@@ -9,17 +13,15 @@ import SignInAndSignUp from './pages/sign-in-and-sign-up/sign-in-and-sign-up.com
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 
 class App extends React.Component {
-  constructor() {
-    super();
-
-    this.state = {
-      currentUser: null
-    }
-  }
 
   unsubscribeFromAuth = null;
 
   componentDidMount = () => {
+
+    const { settingCurrentUser } = this.props;
+
+    console.log('Set current user ', settingCurrentUser);
+
     this.unsubscribeFromAuth = auth.onAuthStateChanged( async userAuth => {
       /* if userAuth exists
          call createUserProfileDocument method and pass userAuth
@@ -33,21 +35,16 @@ class App extends React.Component {
         let userRef = await createUserProfileDocument(userAuth);
 
         userRef.onSnapshot(snapshot => {
-          console.log('snapshot ', snapshot.data().displayName);
-          this.setState({
-            currentUser: {
+          /* Setting the current user by passing the javascript object as an argument. This argument will be the user for setCurrentUser action and it will be dispatched by the dispatch method  */
+          settingCurrentUser({
               id: snapshot.id,
               displayName: snapshot.data().displayName,
               email: snapshot.data().email,
               createdAt: snapshot.data().createdAt
               // instead of above three lines, also can use ...snapshot.data()
-            }
           }, () => console.log('User saved in the state ', this.state));
         })
-      } else {
-        this.setState({ currentUser: null });
-      }
-
+      } else settingCurrentUser(null);
     })
   }
 
@@ -58,14 +55,21 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <Header currentUser = { this.state.currentUser }/>
+        <Header />
         <Route  path = '/shop' component = { ShopPage } />
         <Route exact={true} path = '/' component = { HomePage } />
         <Route path = '/signin' component = { SignInAndSignUp } />
       </div>
     );
   }
-  
 }
 
-export default App;
+/* The object which is returning in this method will be passed as props to the App component, by setting the setCurrentUser in the app component, it will dispath the user-actions and the root reducer will update the store and dom gets updated */
+const mapDispatchToProps = dispatch => {
+  return {
+    settingCurrentUser: user => dispatch(setCurrentUser(user))
+  }
+}
+
+/* First argument is null because we are not mapping state to props i.e we don't want any state values in this component */
+export default connect(null, mapDispatchToProps)(App);
