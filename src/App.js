@@ -1,10 +1,11 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import './App.css';
 
 /* The following imports are for redux operations */
 import { connect } from 'react-redux';
-import { setCurrentUser } from './redux/user/user-actions';
+import { setCurrentUser } from './redux/user/user.actions';
 
 import ShopPage from './pages/shop/shop-page.component';
 import HomePage from './pages/homepage/homepage.component';
@@ -57,10 +58,17 @@ class App extends React.Component {
       <div className="App">
         <Header />
         <Route  path = '/shop' component = { ShopPage } />
-        <Route exact={true} path = '/' component = { HomePage } />
-        <Route path = '/signin' component = { SignInAndSignUp } />
+        <Route exact={ true } path = '/' component = { HomePage } />
+        <Route path = '/signin' render = { () => this.props.currentUser ? <Redirect to = '/' /> : < SignInAndSignUp /> } />
       </div>
     );
+  }
+}
+
+/* Get the current user from the state */
+const mapStateToProps = state => {
+  return {
+    currentUser: state.user.currentUser
   }
 }
 
@@ -72,4 +80,4 @@ const mapDispatchToProps = dispatch => {
 }
 
 /* First argument is null because we are not mapping state to props i.e we don't want any state values in this component */
-export default connect(null, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
