@@ -1,6 +1,5 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
-import { Redirect } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import './App.css';
 
 /* The following imports are for redux operations */
@@ -20,8 +19,6 @@ class App extends React.Component {
   componentDidMount = () => {
 
     const { settingCurrentUser } = this.props;
-
-    console.log('Set current user ', settingCurrentUser);
 
     this.unsubscribeFromAuth = auth.onAuthStateChanged( async userAuth => {
       /* if userAuth exists
@@ -57,13 +54,31 @@ class App extends React.Component {
     return (
       <div className="App">
         <Header />
-        <Route  path = '/shop' component = { ShopPage } />
-        <Route exact={ true } path = '/' component = { HomePage } />
-        <Route path = '/signin' render = { () => this.props.currentUser ? <Redirect to = '/' /> : < SignInAndSignUp /> } />
+        <Switch>
+          <Route exact path='/' component= { HomePage  } />
+          <Route path='/shop' component={ ShopPage } />
+          <Route
+            exact
+            path='/signin'
+            render={() =>
+              this.props.currentUser ? (
+                <Redirect to='/' />
+              ) : (
+                <SignInAndSignUp />
+              )
+            }
+          />
+        </Switch>
       </div>
     );
   }
 }
+
+/* 
+<Route path = '/shop' component = { ShopPage } />
+        <Route exact={ true } path = '/' component = { HomePage } />
+        <Route path = '/signin' render = { () => this.props.currentUser ? <Redirect to = '/' /> : < SignInAndSignUp /> } />
+*/
 
 /* Get the current user from the state */
 const mapStateToProps = state => {
@@ -75,7 +90,9 @@ const mapStateToProps = state => {
 /* The object which is returning in this method will be passed as props to the App component, by setting the setCurrentUser in the app component, it will dispath the user-actions and the root reducer will update the store and dom gets updated */
 const mapDispatchToProps = dispatch => {
   return {
-    settingCurrentUser: user => dispatch(setCurrentUser(user))
+    settingCurrentUser: user => {
+      dispatch(setCurrentUser(user))
+    }
   }
 }
 

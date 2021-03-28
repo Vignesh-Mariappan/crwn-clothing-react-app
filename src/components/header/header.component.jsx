@@ -8,8 +8,10 @@ import { connect } from 'react-redux';
 import './header.styles.scss';
 
 import { ReactComponent as Logo } from '../../assets/crown.svg';
+import CartIcon from '../cart-icon/cart-icon.component';
+import CartDropDown from '../cart-dropdown/cart-dropdown.component';
 
-const Header = ({ currentUser }) => (
+const Header = ({ currentUser, hidden }) => (
     <div className = 'header'>
         <Link to = "/" className = 'logo-container'>
             <Logo className = 'logo'/>
@@ -23,14 +25,22 @@ const Header = ({ currentUser }) => (
                 :
                 <Link to = '/signin' className = 'option'>SIGN IN</Link>
             }
+            <CartIcon />
         </div>
+        { hidden ? null : <CartDropDown /> }
+
     </div>
 );
 
-const mapStateToProps = (state) => {
+/* When we load the application for the first time, we need hidden value to show or hide the cart dropdown, so the following lines will call the cart.reducer and the default state is returned, since we are requesting for state as props and we are not passing any action(action will be passed only when we dispatch) */
+const mapStateToProps = state => {
+   console.log('hidden ', state.cart.hidden);
    return {
-       currentUser: state.user.currentUser
+       currentUser: state.user.currentUser,
+       hidden: state.cart.hidden
    };
 }
+
+// 
 
 export default connect(mapStateToProps)(Header);
