@@ -1,8 +1,9 @@
 import { combineReducers } from 'redux';
 
 import userReducer from './user/user.reducer';
-
 import cartReducer from './cart/cart.reducer';
+import directoryReducer from './directory/directory.reducer';
+import collectionsReducer from './collections/collections.reducer';
 
 // storage from the redux-persist library indicates local storage
 import { persistReducer } from 'redux-persist';
@@ -17,7 +18,9 @@ const persistConfig = {
 /* combineReducers will combine all the reducers into one big js object, it takes a js object as an argument where it contains all the reducers */
 const rootReducer = combineReducers({
     user: userReducer,
-    cart: cartReducer
+    cart: cartReducer,
+    directory: directoryReducer,
+    collections: collectionsReducer
 });
 
 export default persistReducer(persistConfig, rootReducer);
