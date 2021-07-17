@@ -1,7 +1,6 @@
 .menu-item {
     min-width: 30%;
-    height: 240px; // --> Instructor given value
-    // height: 400px; // Modified value
+    height: 240px; 
     flex: 1 1 auto;
     display: flex;
     align-items: center;
@@ -24,8 +23,8 @@
     }
 
     &.large {
-      // height: 360px; --> Instructor given value
-      height: 560px; // Modified value
+      height: 360px; // --> Instructor given value
+      // height: 560px; // Modified value
     }
   
     &:first-child {

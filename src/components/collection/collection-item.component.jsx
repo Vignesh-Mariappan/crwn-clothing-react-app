@@ -16,11 +16,12 @@ const CollectionItem = ({ item, addItem }) => {
                 style = {{ backgroundImage: `url(${imageUrl})` }} />
             <div className = 'collection-footer'>
                 <span className = 'name'>{name}</span>
-                <span className = 'price'>{price}</span>
+                <span className = 'price'>${price}</span>
             </div>
-            <CustomButton onClick = { () => addItem(item) } inverted>Add to cart</CustomButton>
+            <CustomButton className = 'custom-button' onClick = { () => addItem(item) } inverted>Add to cart</CustomButton>
         </div>
-)};
+    )
+}
 
 // collection item component will receive the addItem method as prop
 // when the user clicks the Add to cart button, this addItem will get executed

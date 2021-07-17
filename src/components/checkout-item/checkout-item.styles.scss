@@ -37,6 +37,11 @@
     .remove-button {
       padding-left: 12px;
       cursor: pointer;
+      color: red;
+
+      &:hover {
+        filter: brightness(85%);
+      }
     }
   }
   

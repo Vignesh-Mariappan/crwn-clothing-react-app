@@ -1,7 +1,7 @@
 .collection-preview {
     display: flex;
     flex-direction: column;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
   
     .title {
       font-size: 28px;
@@ -10,12 +10,44 @@
       padding: 10px 0;
       border-top: 1px solid #555;
       border-bottom: 1px solid #555;
-      width: 97%;
+      width: 100%;
+      cursor: pointer;
+
+      &:hover {
+        color: #555;
+      }
     }
   
     .preview {
       display: flex;
       justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    .view-more-container {
+      display: flex;
+      justify-content: flex-end;
+      margin: 10px 0;
+      cursor: pointer;
+
+      .view-more {
+        border: 1px solid #555;
+        padding: 10px;
+
+        &:hover {
+          color: whitesmoke;
+          background-color: #555;
+        }
+      }
+
     }
   }
+
+  @media screen and (max-width: 1300px) {
+    .collection-preview {
+      .preview {
+        justify-content: space-evenly;
+      }
+    }
+}
   

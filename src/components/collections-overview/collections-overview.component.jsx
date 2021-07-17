@@ -1,7 +1,5 @@
 import React from 'react';
-
 import { connect } from 'react-redux';
-
 import { createStructuredSelector } from 'reselect';
 
 import { convertCollectionsShopDatatoArray } from '../../redux/collections/collections.selectors';
